@@ -1,0 +1,275 @@
+{% include 'main/header.html' %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>UGift</title>
+    <style>
+        body {
+            width: 100%;
+            overflow-x: hidden;
+            margin: 0;
+            background: white;
+            font-family: 'Montserrat Alternates', sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .background {
+            width: 100%;
+            height: 100%;
+            background: #FCE2AF;
+            position: relative;
+            flex-grow: 1;
+        }
+        .top-icon {
+            width: 48px;
+            height: 48px;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+        .black-square {
+            width: 36px;
+            height: 24px;
+            background: black;
+        }
+        .catalog-title {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(0, 0, 0, 0.80);
+            font-size: 40px;
+            font-weight: 700;
+        }
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 15px;
+        }
+        .filter-button {
+            padding: 18px 25px;
+            background: white;
+            border-radius: 50px;
+            display: inline-flex;
+            justify-content: flex-start;
+            align-items: center;
+            cursor: pointer;
+        }
+        .filter-label {
+            color: black;
+            font-size: 20px;
+            font-weight: 400;
+        }
+        .filter-icon {
+            width: 28px;
+            height: 28px;
+            position: relative;
+        }
+        .filter-icon div {
+            width: 7px;
+            height: 14px;
+            position: absolute;
+            left: 21px;
+            top: 17.50px;
+            transform: rotate(-90deg);
+            transform-origin: 0 0;
+            border: 2px #33363F solid;
+        }
+        .products-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 20px;
+        }
+        .product-container {
+            width: 435px;
+            height: 522px;
+            background: #EFC3C6;
+            border-radius: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .product-price {
+            margin-top: 20px;
+            color: black;
+            font-size: 28px;
+            font-weight: 500;
+        }
+        .product-image {
+            width: 395px;
+            height: 315px;
+            border-radius: 20px;
+        }
+        .product-title {
+            margin: 10px 0;
+            color: black;
+            font-size: 24px;
+            font-weight: 400;
+            text-align: center;
+        }
+        .shop-button {
+            width: 395px;
+            height: 44px;
+            padding: 10px;
+            background: white;
+            border-radius: 50px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+        }
+        .filter-dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .filter-dropdown div {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .filter-dropdown div:hover {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="background"></div>
+        <div class="catalog-title">КАТАЛОГ</div>
+
+        <div class="filter-buttons">
+            <div class="filter-button" id="popularityFilterButton">
+                <div class="filter-label">ПО ПОПУЛЯРНОСТИ</div>
+            </div>
+
+            <div class="filter-button" id="priceFilterButton">
+                <div classя нан="filter-label">ЦЕНА</div>
+            </div>
+
+            <div class="filter-button" id="categoryFilterButton">
+                <div class="filter-label">КАТЕГОРИЯ</div>
+            </div>
+            <div class="filter-button" id="whoFilterButton">
+                <div class="filter-label">КОМУ</div>
+            </div>
+        </div>
+
+        <div class="filter-dropdown" id="categoryDropdown">
+            <div data-category="food">Еда</div>
+            <div data-category="gift_set">Подарочный набор</div>
+        </div>
+
+        <div class="filter-dropdown" id="whoDropdown">
+            <div data-who="woman">Девушка</div>
+            <div data-who="man">Парень</div>
+            <div data-who="mom">Мама</div>
+            <div data-who="dad">Папа</div>
+        </div>
+
+        <!-- Продукты -->
+        <div class="products-list" id="productsList">
+            {% for product in products %}
+                <div class="product-container" data-price="{{ product.price }}" data-popularity="{{ product.quantity_purchased }}" data-category="{{ product.category }}" data-who="{{ product.for_who }}">
+                    <div class="product-price">{{ product.price }} руб.</div>
+                    <img class="product-image" src="{{ product.img }}" />
+                    <div class="product-title">{{ product.name }}</div>
+                    <div class="shop-button">
+                        <a href="{% url 'product_detail' product.url %}" class="filter-label">ПЕРЕЙТИ В МАГАЗИН</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        let isAscending = true;
+
+        document.getElementById('priceFilterButton').addEventListener('click', function() {
+            const productsList = document.getElementById('productsList');
+            const products = Array.from(productsList.children);
+
+            products.sort((a, b) => {
+                const priceA = parseFloat(a.getAttribute('data-price'));
+                const priceB = parseFloat(b.getAttribute('data-price'));
+                return isAscending ? priceA - priceB : priceB - priceA;
+            });
+
+            isAscending = !isAscending;
+
+            products.forEach(product => productsList.appendChild(product));
+        });
+
+        document.getElementById('popularityFilterButton').addEventListener('click', function() {
+            const productsList = document.getElementById('productsList');
+            const products = Array.from(productsList.children);
+
+            products.sort((a, b) => {
+                const popularityA = parseInt(a.getAttribute('data-popularity'));
+                const popularityB = parseInt(b.getAttribute('data-popularity'));
+                return popularityB - popularityA; // Sort by popularity (descending)
+            });
+
+            products.forEach(product => productsList.appendChild(product));
+        });
+
+        document.getElementById('categoryFilterButton').addEventListener('click', function() {
+            const dropdown = document.getElementById('categoryDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.getElementById('whoFilterButton').addEventListener('click', function() {
+            const dropdown = document.getElementById('whoDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.querySelectorAll('#categoryDropdown div').forEach(item => {
+            item.addEventListener('click', function() {
+                const selectedCategory = this.getAttribute('data-category');
+                filterProducts('category', selectedCategory);
+                document.getElementById('categoryDropdown').style.display = 'none';
+            });
+        });
+
+        document.querySelectorAll('#whoDropdown div').forEach(item => {
+            item.addEventListener('click', function() {
+                const selectedWho = this.getAttribute('data-who');
+                filterProducts('who', selectedWho);
+                document.getElementById('whoDropdown').style.display = 'none';
+            });
+        });
+
+        function filterProducts(type, value) {
+            const productsList = document.getElementById('productsList');
+            const products = Array.from(productsList.children);
+
+            products.forEach(product => {
+                if (product.getAttribute(`data-${type}`) === value) {
+                    product.style.display = 'flex';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('click', function(event) {
+            const categoryDropdown = document.getElementById('categoryDropdown');
+            const whoDropdown = document.getElementById('whoDropdown');
+
+            if (!event.target.closest('#categoryFilterButton') && !event.target.closest('#categoryDropdown')) {
+                categoryDropdown.style.display = 'none';
+            }
+            if (!event.target.closest('#whoFilterButton') && !event.target.closest('#whoDropdown')) {
+                whoDropdown.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+{% include 'main/footer.html' %}

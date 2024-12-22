@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat Alternates', sans-serif;
+        }
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: transparent;
+            z-index: 1000;
+        }
+        .logo img {
+            width: 7vh;
+            height: auto;
+            margin-left: 6vh;
+        }
+        .burger {
+            width: 30px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            margin-right: 2vh;
+        }
+        .burger div {
+            width: 100%;
+            height: 4px;
+            background-color: black;
+            border-radius: 2px;
+        }
+        .content {
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">
+            <img src="/media/logo.png" alt="Логотип">
+        </a>
+        <div class="burger" id="burgerMenu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </header>
+</body>
+</html>

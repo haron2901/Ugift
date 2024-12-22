@@ -1,0 +1,335 @@
+{% include 'main/header.html' %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Joan&family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        overflow-x: hidden;
+        font-family: 'Encode Sans', sans-serif;
+    }
+
+    .welcome {
+         position: relative;
+        width: 100%;
+        height: 100vh;
+        left: 0px;
+        top: 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: #EFC3C6;
+    }
+
+    .text-section {
+        max-width: 40%;
+        margin-top: 20vh;
+        margin-left: 9vh;
+    }
+
+    .title {
+    font-size:128px;
+    font-family: 'Encode Sans', sans-serif;
+    }
+
+    .titleMini {
+        margin-top: 3vh;
+        font-size:40px;
+        white-space: nowrap;
+        font-family: 'Montserrat Alternates', sans-serif;
+    }
+
+   .roadToCatalog {
+    outline: none;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    margin-top: 5vh;
+    color: #FFFFFF;
+    width: 28vh;
+    height: 7vh;
+    background: #E24A63;
+    border-radius: 37.5px;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 20px;
+    text-decoration: none; /* Убираем подчеркивание */
+    display: inline-flex; /* Чтобы кнопка выглядела как блочный элемент */
+    align-items: center; /* Центрируем текст по вертикали */
+    justify-content: center; /* Центрируем текст по горизонтали */
+}
+
+.roadToCatalog:hover {
+    transform: scale(1.05);
+}
+
+
+    .bigGift {
+     margin-top: 34vh;
+     margin-left: 20vh;
+     position: absolute;
+     width: 95vh ;
+     height: 86vh;
+     z-index: 1;
+    pointer-events: none;
+
+    }
+    .balloonGift {
+        position: absolute;
+        width: 90vh;
+        height: 130vh;
+        transform: rotate(5.82deg);
+        margin-left: 100vh;
+        margin-top: -14vh;
+            pointer-events: none;
+
+    }
+    .aboutUs{
+    display:flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: 'Montserrat Alternates', sans-serif;
+    z-index:2;
+    position: relative;
+    background-color:#FCE2AF;
+    height: 53vh;
+    width: 100%;
+    }
+    .aboutUsText{
+    white-space: nowrap;
+    font-size: 36px;
+    margin-left: 25vh;
+    text-align: right;
+    font-weight: 500;
+    }
+    .gift{
+    height:37vh;
+    width:37vh;
+    margin-left: 5vh;
+     transform: scaleX(-1);
+         pointer-events: none;
+
+    }
+    .forWho{
+     width: 100%;
+     height: 68vh;
+     background: #EFC3C6;
+    }
+
+    .scroll {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    height: 100%;
+}
+.choice {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: 33vh;
+    height: 34vh;
+    background-color: #FCE2AF;
+    border-radius: 20px;
+    position: relative;
+    margin: 0 10px;
+}
+
+
+.forWhoText {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-family: "Montserrat Alternates", serif;
+    font-size: 25px;
+    font-weight: 700;
+}
+.forWhoTitle{
+    position:absolute;
+    margin-top: 5vh;
+    font-family: "Montserrat Alternates", serif;
+    margin-left:15vh;
+    font-size: 40px;
+    font-weight: 700;
+}
+
+    .white {
+    width: 28vh;
+    height: 27vh;
+    margin-bottom: 17%;
+    background-color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.img-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 70%;
+    height: 70%;
+}
+
+.img-container img {
+    width: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+.img-container .man {
+    width: 110%;
+}
+.img-container .mom {
+    width: 167%;
+}
+.woman{
+height:26vh;
+margin-bottom:1vh;
+margin-top:-2.5vh;
+}
+    .man{
+    height:150%;
+    margin-top:-8vh;
+    }
+
+
+    .mom{
+    height:40vh;
+    margin-top:-10vh;
+    margin-left:-2.5vh;
+    }
+    .dad{
+    height:30vh;
+    margin-top:-6.7vh;
+    }
+    .arrow {
+    cursor: pointer;
+    width: 50px;
+    height: auto;
+    margin: 0 20px;
+    z-index: 2;
+}
+
+.choice-container {
+    display: flex;
+    transition: transform 0.5s ease;
+    margin: 0 20px;
+}
+.arrow{
+     height:10vh;
+     width:10vh;
+}
+    .right-arrow{
+         transform: scaleX(-1);
+    }
+.meatballs{
+     margin-top:-22vh;
+     margin-left:87vh;
+}
+</style>
+</head>
+<body>
+<div class="welcome">
+    <div class="text-section">
+        <h1 class="title">UGift</h1>
+        <h3 class="titleMini">Подарки для любого случая!</h3>
+        <a href="/page2" class="roadToCatalog">В КАТАЛОГ</a>
+    </div>
+        <img src="media/2.png" class="bigGift" alt="Подарок">
+        <img src="media/3.png" class="balloonGift" alt="Шарики">
+</div>
+<div class="aboutUs">
+<img src="media/1.png" class="gift" alt="Подарок">
+    <a class="aboutUsText">
+        Наш сайт – это универсальный помощник в поиске<br>идеальных подарков для любых случаев и людей. Мы<br>собираем лучшие предложения с ведущих маркетплейсов,<br>чтобы вы могли легко выбрать и заказать подарок<br>онлайн.
+    </a>
+</div>
+<div class="forWho">
+    <a class="forWhoTitle">ВЫБЕРИТЕ ПОДАРОК ДЛЯ:</a>
+    <div class="scroll">
+        <img src="media/expand_left.png" class="arrow left-arrow" alt="Left Arrow">
+        <div class="choice-container">
+            <div class="choice">
+                <div class="white"></div>
+                <div class="img-container">
+                    <img class="woman" src="media/woman.png" alt="women">
+                </div>
+                <a class="forWhoText">ДЕВУШКИ</a>
+            </div>
+
+            <div class="choice">
+                <div class="white"></div>
+                <div class="img-container">
+                    <img class="man" src="media/man.png" alt="man">
+                </div>
+                <a class="forWhoText">ПАРНЯ</a>
+            </div>
+
+            <div class="choice">
+                <div class="white"></div>
+                <div class="img-container">
+                    <img class="mom" src="media/mom.png" alt="mom">
+                </div>
+                <a class="forWhoText">МАМЫ</a>
+            </div>
+
+            <div class="choice">
+                <div class="white"></div>
+                <div class="img-container">
+                    <img class="dad" src="media/dad.png" alt="dad">
+                </div>
+                <a class="forWhoText">ПАПЫ</a>
+            </div>
+        </div>
+        <img src="media/expand_left.png" class="arrow right-arrow" alt="Right Arrow">
+    </div>
+    <img src="media/Meatballs_menu.png" class="meatballs">
+</div>
+<script>
+    const leftArrow = document.querySelector('.left-arrow');
+    const rightArrow = document.querySelector('.right-arrow');
+    const choiceContainer = document.querySelector('.choice-container');
+    const choices = Array.from(document.querySelectorAll('.choice'));
+
+    let currentOrder = [0, 1, 2, 3];
+
+    function updateOrder(newOrder) {
+        currentOrder = newOrder;
+        choiceContainer.innerHTML = '';
+        currentOrder.forEach(index => {
+            choiceContainer.appendChild(choices[index]);
+        });
+    }
+
+    function rotateRight() {
+        const newOrder = [currentOrder[currentOrder.length - 1], ...currentOrder.slice(0, -1)];
+        updateOrder(newOrder);
+    }
+
+    function rotateLeft() {
+        const newOrder = [...currentOrder.slice(1), currentOrder[0]];
+        updateOrder(newOrder);
+    }
+
+    rightArrow.addEventListener('click', rotateRight);
+    leftArrow.addEventListener('click', rotateLeft);
+</script>
+
+</body>
+{% include 'main/footer.html' %}
