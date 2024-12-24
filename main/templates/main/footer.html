@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UGift</title>
     <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Joan&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
     <style>
         /* Основные стили для страницы */
         body {
@@ -18,17 +17,19 @@
         /* Стили футера */
         .footer {
             width: 100%;
-            height: 26vh;
+            height: auto; /* Изменено на auto для адаптации к содержимому */
             background-color: white;
             padding: 2vh 3vw;
             display: flex;
             justify-content: space-between;
+            align-items: center; /* Центрирование элементов по вертикали */
             flex-wrap: wrap; /* Перенос для мобильной версии */
         }
 
         /* Левый блок с логотипом и текстом */
         .footer-left {
             display: flex;
+            align-items: center; /* Центрирование элементов по вертикали */
             gap: 1vh; /* Расстояние между логотипом и текстом */
         }
 
@@ -45,27 +46,32 @@
             font-family: "Arial", sans-serif;
             font-size: 1.8vh;
             margin: 0;
-             margin-top: 2vh;
+            margin-top: 2vh;
         }
 
         .footer-text .footer-title {
-            margin-top:1.5vh;
+            margin-top: 1.5vh;
             font-family: "JetBrains Mono", serif;
             font-size: 48px;
-             margin-top: 2vh;
+            margin-top: 2vh;
         }
 
         .footer-company {
             font-family: "Arial", sans-serif;
-            margin-right:20vh;
-            margin-top:17vh;
+            margin-right: 20vh;
+            margin-top: 17vh;
             color: black;
         }
 
-        .footer-right img{
-            margin-top:4vh;
+        .footer-right {
+            display: flex;
+            align-items: center; /* Центрирование элементов по вертикали */
+        }
+
+        .footer-right img {
+            margin-top: 0; /* Убрано верхнее поле для выравнивания с другими элементами */
             width: 17vh;
-            height: 5vh;
+            height: auto; /* Поддержка соотношения сторон */
         }
 
         @media (max-width: 768px) {
@@ -75,11 +81,18 @@
                 text-align: center;
                 padding: 3vh;
             }
+            .footer-company {
+                margin-top: 2vh; /* Добавлено пространство сверху для компании */
+            }
+            .footer-right {
+                margin-top: 2vh; /* Добавлено пространство сверху для социальных иконок */
+            }
         }
-        .footer-date{
-        font-family: "Joan", serif;
-        font-size:40px;
-        margin-left:-9vh;
+
+        .footer-date {
+            font-family: "Joan", serif;
+            font-size: 40px;
+            margin-left: -9vh;
         }
     </style>
 </head>

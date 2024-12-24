@@ -124,18 +124,21 @@
          pointer-events: none;
 
     }
-    .forWho{
-     width: 100%;
-     height: 68vh;
-     background: #EFC3C6;
-    }
+.forWho {
+    width: 100%;
+    height: 68vh;
+    background: #EFC3C6;
+    display: flex;
+    flex-direction: column; /* Позволяет размещать элементы по вертикали */
+    align-items: center; /* Центрирует элементы по горизонтали */
+}
 
-    .scroll {
+.scroll {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 40px;
-    height: 100%;
+    height: auto; /* Установите высоту на auto, чтобы стрелочки не смещались */
 }
 .choice {
     display: flex;
@@ -159,11 +162,10 @@
     font-size: 25px;
     font-weight: 700;
 }
-.forWhoTitle{
-    position:absolute;
+.forWhoTitle {
     margin-top: 5vh;
     font-family: "Montserrat Alternates", serif;
-    margin-left:15vh;
+    margin-left: 15vh; /* Сохраните ваше текущее значение */
     font-size: 40px;
     font-weight: 700;
 }
@@ -238,9 +240,10 @@ margin-top:-2.5vh;
     .right-arrow{
          transform: scaleX(-1);
     }
-.meatballs{
-     margin-top:-22vh;
-     margin-left:87vh;
+.meatballs-container {
+    display: flex;
+    justify-content: center; /* Центрирует изображение по горизонтали */
+    margin-top: 20px; /* Отодвигает изображение немного вниз, чтобы оно не перекрывалось с другими элементами */
 }
 </style>
 </head>
@@ -299,7 +302,9 @@ margin-top:-2.5vh;
         </div>
         <img src="media/expand_left.png" class="arrow right-arrow" alt="Right Arrow">
     </div>
-    <img src="media/Meatballs_menu.png" class="meatballs">
+    <div class="meatballs-container">
+        <img src="media/Meatballs_menu.png" class="meatballs" alt="Meatballs">
+    </div>
 </div>
 <script>
     const leftArrow = document.querySelector('.left-arrow');

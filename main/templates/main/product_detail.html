@@ -1,18 +1,173 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% include 'main/header.html' %}
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ product.name }}</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #EFC3C6;
+            color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .product-container {
+            background-color: #EFC3C6;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-padding {
+            height: 20vh;
+            background-color: #EFC3C6;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 12vh;
+            left: 7vh;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .back-button img{
+            width: 80%;
+            height: 80%;
+
+        }
+        .product-main {
+            display: flex;
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .product-gallery {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-images {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-image {
+            max-width: 90%;
+            max-height: 50%;
+            border-radius: 10px;
+        }
+
+        .thumbnails {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .thumbnails img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .product-details {
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .product-details h1 {
+            font-size: 24px;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .links {
+            margin-top: 1rem;
+        }
+
+        .link {
+            display: inline-block;
+            margin-right: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .product-main {
+                flex-direction: column;
+            }
+
+            .product-details {
+                text-align: center;
+            }
+
+            .back-button {
+                top: 30px;
+                left: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ product.name }}</h1>
-    <img src="https://via.placeholder.com/395x315" alt="{{ product.name }}">
-    <p>Цена: {{ product.price }} руб.</p>
-    <p>Тип: {{ product.type }}</p>
-    <p>Дата создания: {{ product.created_at }}</p>
-    <p>Дата обновления: {{ product.updated_at }}</p>
+    <div class="product-container">
+        <!-- Фон над основным блоком -->
+        <div class="content-padding"></div>
+
+        <a class="back-button"><img src="/media/Vector 9.png"></a>
+
+        <main class="product-main">
+            <div class="product-gallery">
+                <div class="product-images">
+                    <img class="main-image" src="/media/{{ product.img }}" alt="{{ product.name }}">
+                    <div class="thumbnails">
+                        <img src="/media/{{ product.img }}" alt="Mini 1">
+                        <img src="/media/{{ product.img }}" alt="Mini 2">
+                        <img src="/media/{{ product.img }}" alt="Mini 3">
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-details">
+                <h1>{{ product.name }}</h1>
+                <p class="price">{{ product.price }} руб.</p>
+                <p class="description">Some text :)</p>
+                <div class="links">
+                    <a href="{{ product.wildberries_url }}" class="link">Wildberries</a>
+                    <a href="{{ product.ozon_url }}" class="link">Ozon</a>
+                    <a href="{{ product.yandex_market_url }}" class="link">Яндекс Маркет</a>
+                </div>
+            </div>
+        </main>
+    </div>
 </body>
 </html>
 {% include 'main/footer.html' %}
-

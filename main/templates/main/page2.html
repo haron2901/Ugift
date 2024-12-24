@@ -12,6 +12,11 @@
             background: white;
             font-family: 'Montserrat Alternates', sans-serif;
         }
+           * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        }
         .container {
             display: flex;
             flex-direction: column;
@@ -50,6 +55,7 @@
             gap: 15px;
         }
         .filter-button {
+            position: relative; /* Для правильного позиционирования выпадающего списка */
             padding: 18px 25px;
             background: white;
             border-radius: 50px;
@@ -126,11 +132,14 @@
         }
         .filter-dropdown {
             display: none;
-            position: absolute;
+            position: absolute; /* Позиционируется относительно кнопки */
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 10;
+            top: 100%; /* Позиционирование ниже кнопки */
+            left: 0; /* Выравнивание по левому краю кнопки */
+            width: 200px; /* Ширина выпадающего списка */
         }
         .filter-dropdown div {
             padding: 10px;
@@ -152,35 +161,33 @@
             </div>
 
             <div class="filter-button" id="priceFilterButton">
-                <div classя нан="filter-label">ЦЕНА</div>
+                <div class="filter-label">ЦЕНА</div>
             </div>
 
             <div class="filter-button" id="categoryFilterButton">
                 <div class="filter-label">КАТЕГОРИЯ</div>
+                <div class="filter-dropdown" id="categoryDropdown">
+                    <div data-category="food">Еда</div>
+                    <div data-category="gift_set">Подарочный набор</div>
+                </div>
             </div>
+
             <div class="filter-button" id="whoFilterButton">
                 <div class="filter-label">КОМУ</div>
+                <div class="filter-dropdown" id="whoDropdown">
+                    <div data-who="woman">Девушка</div>
+                    <div data-who="man">Парень</div>
+                    <div data-who="mom">Мама</div>
+                    <div data-who="dad">Папа</div>
+                </div>
             </div>
         </div>
 
-        <div class="filter-dropdown" id="categoryDropdown">
-            <div data-category="food">Еда</div>
-            <div data-category="gift_set">Подарочный набор</div>
-        </div>
-
-        <div class="filter-dropdown" id="whoDropdown">
-            <div data-who="woman">Девушка</div>
-            <div data-who="man">Парень</div>
-            <div data-who="mom">Мама</div>
-            <div data-who="dad">Папа</div>
-        </div>
-
-        <!-- Продукты -->
         <div class="products-list" id="productsList">
             {% for product in products %}
                 <div class="product-container" data-price="{{ product.price }}" data-popularity="{{ product.quantity_purchased }}" data-category="{{ product.category }}" data-who="{{ product.for_who }}">
                     <div class="product-price">{{ product.price }} руб.</div>
-                    <img class="product-image" src="{{ product.img }}" />
+                     <img class="product-image" src="media/{{ product.img }}" />
                     <div class="product-title">{{ product.name }}</div>
                     <div class="shop-button">
                         <a href="{% url 'product_detail' product.url %}" class="filter-label">ПЕРЕЙТИ В МАГАЗИН</a>
@@ -214,7 +221,7 @@
             products.sort((a, b) => {
                 const popularityA = parseInt(a.getAttribute('data-popularity'));
                 const popularityB = parseInt(b.getAttribute('data-popularity'));
-                return popularityB - popularityA; // Sort by popularity (descending)
+                return popularityB - popularityA; // Сортировка по популярности (по убыванию)
             });
 
             products.forEach(product => productsList.appendChild(product));
