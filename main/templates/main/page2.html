@@ -185,7 +185,7 @@
 
             <div class="filter-button" id="priceFilterButton">
                 <div class="filter-label">ЦЕНА</div>
-                <img src="media/Expand_down.png" class="filter-arrow" id="priceArrow" />
+                <img src="media/Expand_down.png" class="filter-arrow" id="priceFilterArrow" />
             </div>
 
             <div class="filter-button" id="categoryFilterButton">
@@ -226,13 +226,10 @@
         let isAscendingPrice = true;
         let isAscendingPopularity = true;
 
-        const selectedCategories = new Set();
-        const selectedWhos = new Set();
-
         document.getElementById('priceFilterButton').addEventListener('click', function() {
             const productsList = document.getElementById('productsList');
             const products = Array.from(productsList.children);
-            const priceArrow = document.getElementById('priceArrow');
+            const priceArrow = document.getElementById('priceFilterArrow');
 
             products.sort((a, b) => {
                 const priceA = parseFloat(a.getAttribute('data-price'));
@@ -245,6 +242,7 @@
             products.forEach(product => productsList.appendChild(product));
 
             // Поворот стрелочки
+            console.log(priceArrow)
             priceArrow.style.transform = isAscendingPrice ? 'rotate(0deg)' : 'rotate(180deg)';
         });
 
