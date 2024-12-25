@@ -37,4 +37,9 @@ def product_detail(request, url):
     if main_image:
         images = [main_image] + [img for img in images if img != main_image]
 
-    return render(request, 'main/product_detail.html', {'product': product, 'main_image': main_image, 'images': images})
+    return render(request, 'main/product_detail.html', {
+        'product': product,
+        'main_image': main_image,
+        'images': images,
+        'description': product.description  # Добавляем описание продукта в контекст
+    })
