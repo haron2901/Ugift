@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400&display=swap" rel="stylesheet">
     <style>
         html, body {
-            z-index: 20;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -21,7 +21,6 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 20px;
-            background-color: transparent;
             z-index: 100;
         }
         .logo img {
@@ -37,6 +36,7 @@
             justify-content: space-between;
             cursor: pointer;
             margin-right: 2vh;
+            transition: opacity 0.3s ease;
         }
         .burger div {
             width: 100%;
@@ -46,6 +46,129 @@
         }
         .content {
             margin-top: 60px;
+        }
+        .menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100%;
+            width: 33%;
+            background: white;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            transition: right 0.3s ease;
+            z-index: 90;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .menu.active {
+            right: 0;
+        }
+        .menu .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+        .menu .close:before,
+        .menu .close:after {
+            content: '';
+            position: absolute;
+            height: 30px;
+            width: 4px;
+            background-color: black;
+            top: 0;
+            left: 50%;
+            transform-origin: center;
+            transform: translateX(-50%) rotate(45deg);
+        }
+        .menu .close:after {
+            transform: translateX(-50%) rotate(-45deg);
+        }
+        .filter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            padding-left: 3vh;
+        }
+        .filter-header:hover {
+            background-color: #e0e0e0;
+        }
+        .filter-header span {
+            font-family: 'Montserrat Alternates', sans-serif;
+            font-size: 1.625rem;
+        }
+        .filter-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 10px;
+        }
+        .filter-content.active {
+            display: flex;
+        }
+        .filter-content div {
+            cursor: pointer;
+            padding: 5px;
+            width: 100%;
+            text-align: center;
+            background-color: #EFC3C6;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .filter-content div:hover {
+            background-color: #DFA3A6;
+        }
+        .filter input {
+            width: 40%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            background-color: #EFC3C6;
+            -moz-appearance: textfield;
+        }
+        .filter input::-webkit-inner-spin-button,
+        .filter input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+        .arrow.active {
+            transform: rotate(180deg);
+        }
+        .filter-title {
+            font-size: 2.4375rem; /* 1.5 times 1.625rem */
+            margin-bottom: 20px;
+            font-family: 'Montserrat Alternates', sans-serif;
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
     </style>
 </head>
@@ -59,6 +182,166 @@
             <div></div>
             <div></div>
         </div>
+        <div class="menu" id="menu">
+            <div class="filter-title">Фильтры</div>
+            <div class="close" id="closeMenu"></div>
+            <div class="filter">
+                <div class="filter-header" id="priceFilterHeader">
+                    <span>Цена</span>
+                    <img src="media/Expand_down.png" class="arrow" id="priceArrow" />
+                </div>
+                <div class="filter-content" id="priceFilterContent">
+                    <input type="number" id="minPrice" placeholder="От" />
+                    <input type="number" id="maxPrice" placeholder="До" />
+                </div>
+            </div>
+            <div class="filter">
+                <div class="filter-header" id="categoryFilterHeader">
+                    <span>Категория</span>
+                    <img src="media/Expand_down.png" class="arrow" id="categoryArrow" />
+                </div>
+                <div class="filter-content" id="categoryFilterContent">
+                    <div data-category="food">Еда</div>
+                    <div data-category="gift_set">Подарочный набор</div>
+                </div>
+            </div>
+            <div class="filter">
+                <div class="filter-header" id="whoFilterHeader">
+                    <span>Кому</span>
+                    <img src="media/Expand_down.png" class="arrow" id="whoArrow" />
+                </div>
+                <div class="filter-content" id="whoFilterContent">
+                    <div data-who="woman">Девушка</div>
+                    <div data-who="man">Парень</div>
+                    <div data-who="mom">Мама</div>
+                    <div data-who="dad">Папа</div>
+                </div>
+            </div>
+        </div>
     </header>
+
+    <script>
+        const burger = document.getElementById('burgerMenu');
+        const menu = document.getElementById('menu');
+        const closeMenu = document.getElementById('closeMenu');
+        const priceFilterHeader = document.getElementById('priceFilterHeader');
+        const categoryFilterHeader = document.getElementById('categoryFilterHeader');
+        const whoFilterHeader = document.getElementById('whoFilterHeader');
+        const priceFilterContent = document.getElementById('priceFilterContent');
+        const categoryFilterContent = document.getElementById('categoryFilterContent');
+        const whoFilterContent = document.getElementById('whoFilterContent');
+        const priceArrow = document.getElementById('priceArrow');
+        const categoryArrow = document.getElementById('categoryArrow');
+        const whoArrow = document.getElementById('whoArrow');
+
+        const selectedCategories = new Set();
+        const selectedWhos = new Set();
+
+        burger.addEventListener('click', () => {
+            menu.classList.add('active');
+            burger.style.opacity = 0;
+        });
+
+        closeMenu.addEventListener('click', () => {
+            menu.classList.remove('active');
+            setTimeout(() => {
+                burger.style.opacity = 1;
+            }, 300);
+        });
+
+        priceFilterHeader.addEventListener('click', () => {
+            priceFilterContent.classList.toggle('active');
+            priceArrow.classList.toggle('active');
+        });
+
+        categoryFilterHeader.addEventListener('click', () => {
+            categoryFilterContent.classList.toggle('active');
+            categoryArrow.classList.toggle('active');
+        });
+
+        whoFilterHeader.addEventListener('click', () => {
+            whoFilterContent.classList.toggle('active');
+            whoArrow.classList.toggle('active');
+        });
+
+        document.querySelectorAll('#categoryFilterContent div').forEach(item => {
+            item.addEventListener('click', function() {
+                const selectedCategory = this.getAttribute('data-category');
+                if (selectedCategories.has(selectedCategory)) {
+                    selectedCategories.delete(selectedCategory);
+                } else {
+                    selectedCategories.add(selectedCategory);
+                }
+                filterProducts();
+                categoryFilterContent.classList.remove('active');
+            });
+        });
+
+        document.querySelectorAll('#whoFilterContent div').forEach(item => {
+            item.addEventListener('click', function() {
+                const selectedWho = this.getAttribute('data-who');
+                if (selectedWhos.has(selectedWho)) {
+                    selectedWhos.delete(selectedWho);
+                } else {
+                    selectedWhos.add(selectedWho);
+                }
+                filterProducts();
+                whoFilterContent.classList.remove('active');
+            });
+        });
+
+        document.getElementById('minPrice').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                applyPriceFilter();
+            }
+        });
+
+        document.getElementById('maxPrice').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                applyPriceFilter();
+            }
+        });
+
+        function applyPriceFilter() {
+            const minPrice = parseFloat(document.getElementById('minPrice').value);
+            const maxPrice = parseFloat(document.getElementById('maxPrice').value);
+            const productsList = document.getElementById('productsList');
+            const products = Array.from(productsList.children);
+
+            products.forEach(product => {
+                const price = parseFloat(product.getAttribute('data-price'));
+                const isCategoryMatch = selectedCategories.size === 0 || selectedCategories.has(product.getAttribute('data-category'));
+                const isWhoMatch = selectedWhos.size === 0 || selectedWhos.has(product.getAttribute('data-who'));
+
+                if ((isNaN(minPrice) || price >= minPrice) && (isNaN(maxPrice) || price <= maxPrice) && isCategoryMatch && isWhoMatch) {
+                    product.style.display = 'flex';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+
+            menu.classList.remove('active');
+            burger.style.opacity = 1;
+        }
+
+        function filterProducts() {
+            const productsList = document.getElementById('productsList');
+            const products = Array.from(productsList.children);
+
+            products.forEach(product => {
+                const productCategory = product.getAttribute('data-category');
+                const productWho = product.getAttribute('data-who');
+
+                const isCategoryMatch = selectedCategories.size === 0 || selectedCategories.has(productCategory);
+                const isWhoMatch = selectedWhos.size === 0 || selectedWhos.has(productWho);
+
+                if (isCategoryMatch && isWhoMatch) {
+                    product.style.display = 'flex';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>

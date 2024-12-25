@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ product.name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&display=swap" rel="stylesheet"> <!-- Подключаем шрифт -->
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat Alternates', Arial, sans-serif; /* Применяем шрифт к body */
             background-color: #EFC3C6;
             color: #333;
         }
@@ -22,6 +23,7 @@
         .product-container {
             background-color: #EFC3C6;
             width: 100%;
+            height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -39,11 +41,12 @@
             border: none;
             cursor: pointer;
         }
-        .back-button img{
+
+        .back-button img {
             width: 80%;
             height: 80%;
-
         }
+
         .product-main {
             display: flex;
             flex: 1;
@@ -51,36 +54,46 @@
         }
 
         .product-gallery {
-            flex: 1;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            flex-direction: row;
             align-items: center;
+            flex: 1;
+            padding-right: 1rem;
+            position: relative;
         }
 
         .product-images {
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
 
         .main-image {
-            max-width: 90%;
-            max-height: 50%;
+            margin-left: 2vh;
+            margin-top: -5vh;
+            width: 65vh;
+            height: 65vh;
+            max-height: 100%;
             border-radius: 10px;
         }
 
         .thumbnails {
-            margin-top: 1rem;
             display: flex;
-            gap: 0.5rem;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2rem;
+            height: 100%;
+            margin-top: -5vh;
+            margin-left: 10vh;
         }
 
         .thumbnails img {
-            width: 50px;
-            height: 50px;
+            width: auto;
+            height: 20vh;
             border-radius: 5px;
             cursor: pointer;
+            margin-left: 5vh;
         }
 
         .product-details {
@@ -91,28 +104,36 @@
         .product-details h1 {
             font-size: 24px;
             margin-bottom: 1rem;
+            font-family: 'Montserrat Alternates', sans-serif; /* Применяем шрифт к заголовку */
         }
 
         .price {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 1rem;
+            font-family: 'Montserrat Alternates', sans-serif;
+        }
+
+        .description {
+            font-family: 'Montserrat Alternates', sans-serif;
         }
 
         .links {
-            margin-top: 1rem;
+            margin-top: 29rem;
         }
 
         .link {
             display: inline-block;
-            margin-right: 0.5rem;
-            padding: 0.5rem 1rem;
+            margin-right: 2rem;
+            padding: 1rem 4rem;
             background-color: #fff;
             color: #333;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 50px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Montserrat Alternates', sans-serif; /* Применяем шрифт к ссылкам */
+            font-size: 16px; /* Увеличиваем размер шрифта */
         }
 
         .link:hover {
@@ -120,7 +141,45 @@
             box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
         }
 
-        /* Адаптивность */
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .nav-button {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #prevButton {
+            left: 10px;
+        }
+
+        #nextButton {
+            right: 10px;
+        }
+
+        .nav-button img {
+            width: 20px;
+            height: auto;
+        }
+
+        .rotate {
+            transform: rotate(180deg);
+        }
+
         @media (max-width: 768px) {
             .product-main {
                 flex-direction: column;
@@ -134,32 +193,42 @@
                 top: 30px;
                 left: 10px;
             }
+
+            .main-image {
+                max-width: 100%;
+            }
+
+            #prevButton, #nextButton {
+                left: 10px;
+                right: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="product-container">
-        <!-- Фон над основным блоком -->
         <div class="content-padding"></div>
 
-        <a class="back-button"><img src="/media/Vector 9.png"></a>
+        <a class="back-button" href="/page2"><img src="/media/Vector 9.png"></a>
 
         <main class="product-main">
             <div class="product-gallery">
+                <div class="thumbnails">
+                    {% for image in images %}
+                        <img src="/media/{{ image.image_url }}" alt="Mini {{ forloop.counter }}" class="thumbnail" data-index="{{ forloop.counter0 }}">
+                    {% endfor %}
+                </div>
                 <div class="product-images">
-                    <img class="main-image" src="/media/{{ product.img }}" alt="{{ product.name }}">
-                    <div class="thumbnails">
-                        <img src="/media/{{ product.img }}" alt="Mini 1">
-                        <img src="/media/{{ product.img }}" alt="Mini 2">
-                        <img src="/media/{{ product.img }}" alt="Mini 3">
-                    </div>
+                    <img class="main-image" id="mainImage" src="/media/{{ main_image.image_url }}" alt="{{ product.name }}">
+                    <a class="nav-button" style="margin-left:2vh;" id="prevButton" href="javascript:void(0);"><img src="/media/Vector 9.png" alt="Previous" ></a>
+                    <a class="nav-button" id="nextButton" href="javascript:void(0);"><img src="/media/Vector 9.png" alt="Next" class="rotate"></a>
                 </div>
             </div>
-
             <div class="product-details">
                 <h1>{{ product.name }}</h1>
                 <p class="price">{{ product.price }} руб.</p>
                 <p class="description">Some text :)</p>
+                <p style="font-family: 'Montserrat Alternates', sans-serif; font-size: 18px; padding-top: 26rem; position: absolute;">Нажмите, чтобы перейти в магазин</p> <!-- Добавляем надпись -->
                 <div class="links">
                     <a href="{{ product.wildberries_url }}" class="link">Wildberries</a>
                     <a href="{{ product.ozon_url }}" class="link">Ozon</a>
@@ -168,6 +237,41 @@
             </div>
         </main>
     </div>
+
+    <script>
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.getElementById('mainImage');
+        let currentIndex = 0;
+
+        const updateMainImage = (index) => {
+            currentIndex = index;
+            const selectedThumbnail = thumbnails[currentIndex];
+            mainImage.src = selectedThumbnail.src;
+
+            thumbnails.forEach((thumbnail, idx) => {
+                thumbnail.style.display = (idx === currentIndex) ? 'none' : 'block';
+            });
+        };
+
+        thumbnails.forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', () => {
+                currentIndex = index;
+                updateMainImage(currentIndex);
+            });
+        });
+
+        document.getElementById('prevButton').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + thumbnails.length) % thumbnails.length;
+            updateMainImage(currentIndex);
+        });
+
+        document.getElementById('nextButton').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % thumbnails.length;
+            updateMainImage(currentIndex);
+        });
+
+        updateMainImage(currentIndex);
+    </script>
 </body>
 </html>
 {% include 'main/footer.html' %}

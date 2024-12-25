@@ -3,21 +3,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>UGift</title>
+    <title>Каталог</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        .back-button {
+            position: absolute;
+            top: 12vh;
+            left: 7vh;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .back-button img {
+            width: 80%;
+            height: 80%;
+        }
         body {
             width: 100%;
             overflow-x: hidden;
             margin: 0;
-            background: white;
             font-family: 'Montserrat Alternates', sans-serif;
         }
-           * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         .container {
+            background-color: #FCE2AF;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -25,7 +38,6 @@
         .background {
             width: 100%;
             height: 100%;
-            background: #FCE2AF;
             position: relative;
             flex-grow: 1;
         }
@@ -43,10 +55,13 @@
         }
         .catalog-title {
             text-align: center;
-            margin-top: 20px;
             color: rgba(0, 0, 0, 0.80);
             font-size: 40px;
             font-weight: 700;
+            font-family: 'Montserrat Alternates', sans-serif;
+        }
+        .margin-top {
+            margin-top: 20vh; /* Отступ в 20vh */
         }
         .filter-buttons {
             display: flex;
@@ -55,7 +70,7 @@
             gap: 15px;
         }
         .filter-button {
-            position: relative; /* Для правильного позиционирования выпадающего списка */
+            position: relative;
             padding: 18px 25px;
             background: white;
             border-radius: 50px;
@@ -83,6 +98,12 @@
             transform: rotate(-90deg);
             transform-origin: 0 0;
             border: 2px #33363F solid;
+        }
+        .filter-arrow {
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            transition: transform 0.3s;
         }
         .products-list {
             display: flex;
@@ -129,17 +150,18 @@
             justify-content: center;
             align-items: center;
             margin-top: auto;
+            margin-bottom: 20px;
         }
         .filter-dropdown {
             display: none;
-            position: absolute; /* Позиционируется относительно кнопки */
+            position: absolute;
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 10;
-            top: 100%; /* Позиционирование ниже кнопки */
-            left: 0; /* Выравнивание по левому краю кнопки */
-            width: 200px; /* Ширина выпадающего списка */
+            top: 100%;
+            left: 0;
+            width: 200px;
         }
         .filter-dropdown div {
             padding: 10px;
@@ -151,21 +173,24 @@
     </style>
 </head>
 <body>
+<a class="back-button" href="/"><img src="/media/Vector 9.png"></a>
     <div class="container">
-        <div class="background"></div>
-        <div class="catalog-title">КАТАЛОГ</div>
+        <div class="catalog-title margin-top">КАТАЛОГ</div>
 
         <div class="filter-buttons">
             <div class="filter-button" id="popularityFilterButton">
                 <div class="filter-label">ПО ПОПУЛЯРНОСТИ</div>
+                <img src="media/Expand_down.png" class="filter-arrow" id="popularityArrow" />
             </div>
 
             <div class="filter-button" id="priceFilterButton">
                 <div class="filter-label">ЦЕНА</div>
+                <img src="media/Expand_down.png" class="filter-arrow" id="priceArrow" />
             </div>
 
             <div class="filter-button" id="categoryFilterButton">
                 <div class="filter-label">КАТЕГОРИЯ</div>
+                <img src="media/Expand_down.png" class="filter-arrow" id="categoryArrow" />
                 <div class="filter-dropdown" id="categoryDropdown">
                     <div data-category="food">Еда</div>
                     <div data-category="gift_set">Подарочный набор</div>
@@ -174,6 +199,7 @@
 
             <div class="filter-button" id="whoFilterButton">
                 <div class="filter-label">КОМУ</div>
+                <img src="media/Expand_down.png" class="filter-arrow" id="whoArrow" />
                 <div class="filter-dropdown" id="whoDropdown">
                     <div data-who="woman">Девушка</div>
                     <div data-who="man">Парень</div>
@@ -187,44 +213,56 @@
             {% for product in products %}
                 <div class="product-container" data-price="{{ product.price }}" data-popularity="{{ product.quantity_purchased }}" data-category="{{ product.category }}" data-who="{{ product.for_who }}">
                     <div class="product-price">{{ product.price }} руб.</div>
-                     <img class="product-image" src="media/{{ product.img }}" />
+                    <img class="product-image" src="media/{{  product.main_image.image_url }}" />
                     <div class="product-title">{{ product.name }}</div>
                     <div class="shop-button">
-                        <a href="{% url 'product_detail' product.url %}" class="filter-label">ПЕРЕЙТИ В МАГАЗИН</a>
+                        <a href="{% url 'product_detail' product.url %}" class="filter-label" style="text-decoration: none;">ПЕРЕЙТИ В МАГАЗИН</a>
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
     <script>
-        let isAscending = true;
+        let isAscendingPrice = true;
+        let isAscendingPopularity = true;
+
+        const selectedCategories = new Set();
+        const selectedWhos = new Set();
 
         document.getElementById('priceFilterButton').addEventListener('click', function() {
             const productsList = document.getElementById('productsList');
             const products = Array.from(productsList.children);
+            const priceArrow = document.getElementById('priceArrow');
 
             products.sort((a, b) => {
                 const priceA = parseFloat(a.getAttribute('data-price'));
                 const priceB = parseFloat(b.getAttribute('data-price'));
-                return isAscending ? priceA - priceB : priceB - priceA;
+                return isAscendingPrice ? priceA - priceB : priceB - priceA;
             });
 
-            isAscending = !isAscending;
+            isAscendingPrice = !isAscendingPrice;
 
             products.forEach(product => productsList.appendChild(product));
+
+            // Поворот стрелочки
+            priceArrow.style.transform = isAscendingPrice ? 'rotate(0deg)' : 'rotate(180deg)';
         });
 
         document.getElementById('popularityFilterButton').addEventListener('click', function() {
             const productsList = document.getElementById('productsList');
             const products = Array.from(productsList.children);
+            const popularityArrow = document.getElementById('popularityArrow');
 
             products.sort((a, b) => {
                 const popularityA = parseInt(a.getAttribute('data-popularity'));
                 const popularityB = parseInt(b.getAttribute('data-popularity'));
-                return popularityB - popularityA; // Сортировка по популярности (по убыванию)
+                return popularityB - popularityA;
             });
 
             products.forEach(product => productsList.appendChild(product));
+
+            // Поворот стрелочки
+            popularityArrow.style.transform = popularityArrow.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
         });
 
         document.getElementById('categoryFilterButton').addEventListener('click', function() {
@@ -240,7 +278,12 @@
         document.querySelectorAll('#categoryDropdown div').forEach(item => {
             item.addEventListener('click', function() {
                 const selectedCategory = this.getAttribute('data-category');
-                filterProducts('category', selectedCategory);
+                if (selectedCategories.has(selectedCategory)) {
+                    selectedCategories.delete(selectedCategory);
+                } else {
+                    selectedCategories.add(selectedCategory);
+                }
+                filterProducts();
                 document.getElementById('categoryDropdown').style.display = 'none';
             });
         });
@@ -248,17 +291,28 @@
         document.querySelectorAll('#whoDropdown div').forEach(item => {
             item.addEventListener('click', function() {
                 const selectedWho = this.getAttribute('data-who');
-                filterProducts('who', selectedWho);
+                if (selectedWhos.has(selectedWho)) {
+                    selectedWhos.delete(selectedWho);
+                } else {
+                    selectedWhos.add(selectedWho);
+                }
+                filterProducts();
                 document.getElementById('whoDropdown').style.display = 'none';
             });
         });
 
-        function filterProducts(type, value) {
+        function filterProducts() {
             const productsList = document.getElementById('productsList');
             const products = Array.from(productsList.children);
 
             products.forEach(product => {
-                if (product.getAttribute(`data-${type}`) === value) {
+                const productCategory = product.getAttribute('data-category');
+                const productWho = product.getAttribute('data-who');
+
+                const isCategoryMatch = selectedCategories.size === 0 || selectedCategories.has(productCategory);
+                const isWhoMatch = selectedWhos.size === 0 || selectedWhos.has(productWho);
+
+                if (isCategoryMatch && isWhoMatch) {
                     product.style.display = 'flex';
                 } else {
                     product.style.display = 'none';

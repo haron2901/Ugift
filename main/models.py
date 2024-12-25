@@ -6,7 +6,6 @@ class Product(models.Model):
     url = models.URLField(max_length=200)
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    img = models.CharField(max_length=255)
     quantity_purchased = models.IntegerField(default=0)
 
     CATEGORY_CHOICES = [
@@ -40,3 +39,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    image_url = models.CharField(max_length=255)
+    is_main = models.BooleanField(default=False)  # Поле для указания главной картинки
+
+    def __str__(self):
+        return f"Image for {self.product.name} - Main: {self.is_main}"

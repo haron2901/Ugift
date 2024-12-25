@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Product
+from .models import Product, ProductImage
 import random
 
 def index(request):
@@ -21,12 +21,20 @@ def page2(request):
     if who_filter:
         random_products = [product for product in random_products if product.for_who == who_filter]
 
+    for product in random_products:
+        product.main_image = product.images.filter(is_main=True).first()  # Получаем только главное изображение
+
     return render(request, 'main/page2.html', {'products': random_products})
+
 
 def page3(request):
     return render(request, 'main/page3.html')
 
 def product_detail(request, url):
     product = get_object_or_404(Product, url=url)
-    return render(request, 'main/product_detail.html', {'product': product})
+    main_image = product.images.filter(is_main=True).first()
+    images = product.images.all()
+    if main_image:
+        images = [main_image] + [img for img in images if img != main_image]
 
+    return render(request, 'main/product_detail.html', {'product': product, 'main_image': main_image, 'images': images})
