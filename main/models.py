@@ -7,7 +7,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity_purchased = models.IntegerField(default=0)
-    description = models.TextField(blank=True, null=True)  # Добавлено новое поле
+    description = models.TextField(blank=True, null=True)  
 
     CATEGORY_CHOICES = [
         ('food', 'Еда'),
