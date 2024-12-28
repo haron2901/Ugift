@@ -6,13 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400&display=swap" rel="stylesheet">
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat Alternates', sans-serif;
-        }
-        .header {
+       .header {
             position: absolute;
             top: 0;
             left: 0;
@@ -43,9 +37,6 @@
             height: 4px;
             background-color: black;
             border-radius: 2px;
-        }
-        .content {
-            margin-top: 60px;
         }
         .menu {
             position: fixed;
@@ -173,175 +164,142 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <a href="/" class="logo">
-            <img src="/media/logo.png" alt="Логотип">
-        </a>
-        <div class="burger" id="burgerMenu">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="menu" id="menu">
-            <div class="filter-title">Фильтры</div>
-            <div class="close" id="closeMenu"></div>
-            <div class="filter">
-                <div class="filter-header" id="priceFilterHeader">
-                    <span>Цена</span>
-                    <img src="media/Expand_down.png" class="arrow" id="priceArrow" />
-                </div>
-                <div class="filter-content" id="priceFilterContent">
-                    <input type="number" id="minPrice" placeholder="От" />
-                    <input type="number" id="maxPrice" placeholder="До" />
-                </div>
+<header class="header">
+    <a href="/" class="logo">
+        <img src="/media/logo.png" alt="Логотип">
+    </a>
+    <div class="burger" id="burgerMenuHeader">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="menu" id="menuHeader">
+        <div class="filter-title">Фильтры</div>
+        <div class="close" id="closeMenuHeader"></div>
+        <div class="filter">
+            <div class="filter-header" id="priceFilterHeaderHeader">
+                <span>Цена</span>
+                <img src="media/Expand_down.png" class="arrow" id="priceArrowHeader" />
             </div>
-            <div class="filter">
-                <div class="filter-header" id="categoryFilterHeader">
-                    <span>Категория</span>
-                    <img src="media/Expand_down.png" class="arrow" id="categoryArrow" />
-                </div>
-                <div class="filter-content" id="categoryFilterContent">
-                    <div data-category="food">Еда</div>
-                    <div data-category="gift_set">Подарочный набор</div>
-                </div>
-            </div>
-            <div class="filter">
-                <div class="filter-header" id="whoFilterHeader">
-                    <span>Кому</span>
-                    <img src="media/Expand_down.png" class="arrow" id="whoArrow" />
-                </div>
-                <div class="filter-content" id="whoFilterContent">
-                    <div data-who="woman">Девушка</div>
-                    <div data-who="man">Парень</div>
-                    <div data-who="mom">Мама</div>
-                    <div data-who="dad">Папа</div>
-                </div>
+            <div class="filter-content" id="priceFilterContentHeader">
+                <input type="number" id="minPriceHeader" placeholder="От" />
+                <input type="number" id="maxPriceHeader" placeholder="До" />
             </div>
         </div>
-    </header>
+        <div class="filter">
+            <div class="filter-header" id="whoFilterHeaderHeader">
+                <span>Кому</span>
+                <img src="media/Expand_down.png" class="arrow" id="whoArrowHeader" />
+            </div>
+            <div class="filter-content" id="whoFilterContentHeader">
+                <div data-who="woman">Девушка</div>
+                <div data-who="man">Парень</div>
+                <div data-who="mom">Мама</div>
+                <div data-who="dad">Папа</div>
+                <div data-who="friends">Друзья</div>
+                <div data-who="brother">Брат</div>
+                <div data-who="sister">Сестра</div>
+            </div>
+        </div>
+    </div>
+</header>
 
-    <script>
-        const burger = document.getElementById('burgerMenu');
-        const menu = document.getElementById('menu');
-        const closeMenu = document.getElementById('closeMenu');
-        const priceFilterHeader = document.getElementById('priceFilterHeader');
-        const categoryFilterHeader = document.getElementById('categoryFilterHeader');
-        const whoFilterHeader = document.getElementById('whoFilterHeader');
-        const priceFilterContent = document.getElementById('priceFilterContent');
-        const categoryFilterContent = document.getElementById('categoryFilterContent');
-        const whoFilterContent = document.getElementById('whoFilterContent');
-        const priceArrow = document.getElementById('priceArrow');
-        const categoryArrow = document.getElementById('categoryArrow');
-        const whoArrow = document.getElementById('whoArrow');
+<script>
+    const burgerHeader = document.getElementById('burgerMenuHeader');
+    const menuHeader = document.getElementById('menuHeader');
+    const closeMenuHeader = document.getElementById('closeMenuHeader');
+    const priceFilterHeaderHeader = document.getElementById('priceFilterHeaderHeader');
+    const whoFilterHeaderHeader = document.getElementById('whoFilterHeaderHeader');
+    const priceFilterContentHeader = document.getElementById('priceFilterContentHeader');
+    const whoFilterContentHeader = document.getElementById('whoFilterContentHeader');
+    const priceArrowHeader = document.getElementById('priceArrowHeader');
+    const whoArrowHeader = document.getElementById('whoArrowHeader');
 
-        const selectedCategories = new Set();
-        const selectedWhos = new Set();
+    const selectedWhosHeader = new Set();
 
-        burger.addEventListener('click', () => {
-            menu.classList.add('active');
-            burger.style.opacity = 0;
+    burgerHeader.addEventListener('click', () => {
+        menuHeader.classList.add('active');
+        burgerHeader.style.opacity = 0;
+    });
+
+    closeMenuHeader.addEventListener('click', () => {
+        menuHeader.classList.remove('active');
+        setTimeout(() => {
+            burgerHeader.style.opacity = 1;
+        }, 300);
+    });
+
+    priceFilterHeaderHeader.addEventListener('click', () => {
+        priceFilterContentHeader.classList.toggle('active');
+        priceArrowHeader.classList.toggle('active');
+    });
+
+    whoFilterHeaderHeader.addEventListener('click', () => {
+        whoFilterContentHeader.classList.toggle('active');
+        whoArrowHeader.classList.toggle('active');
+    });
+
+    document.querySelectorAll('#whoFilterContentHeader div').forEach(item => {
+        item.addEventListener('click', function() {
+            const selectedWho = this.getAttribute('data-who');
+            if (selectedWhosHeader.has(selectedWho)) {
+                selectedWhosHeader.delete(selectedWho);
+            } else {
+                selectedWhosHeader.add(selectedWho);
+            }
+            filterProductsInHeader();
+            whoFilterContentHeader.classList.remove('active');
         });
+    });
 
-        closeMenu.addEventListener('click', () => {
-            menu.classList.remove('active');
-            setTimeout(() => {
-                burger.style.opacity = 1;
-            }, 300);
-        });
+    document.getElementById('minPriceHeader').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            applyPriceFilterInHeader();
+        }
+    });
 
-        priceFilterHeader.addEventListener('click', () => {
-            priceFilterContent.classList.toggle('active');
-            priceArrow.classList.toggle('active');
-        });
+    document.getElementById('maxPriceHeader').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            applyPriceFilterInHeader();
+        }
+    });
 
-        categoryFilterHeader.addEventListener('click', () => {
-            categoryFilterContent.classList.toggle('active');
-            categoryArrow.classList.toggle('active');
-        });
+    function applyPriceFilterInHeader() {
+        const minPrice = parseFloat(document.getElementById('minPriceHeader').value);
+        const maxPrice = parseFloat(document.getElementById('maxPriceHeader').value);
+        const productsList = document.getElementById('productsList');
+        const products = Array.from(productsList.children);
 
-        whoFilterHeader.addEventListener('click', () => {
-            whoFilterContent.classList.toggle('active');
-            whoArrow.classList.toggle('active');
-        });
+        products.forEach(product => {
+            const price = parseFloat(product.getAttribute('data-price'));
+            const isWhoMatch = selectedWhosHeader.size === 0 || selectedWhosHeader.has(product.getAttribute('data-who'));
 
-        document.querySelectorAll('#categoryFilterContent div').forEach(item => {
-            item.addEventListener('click', function() {
-                const selectedCategory = this.getAttribute('data-category');
-                if (selectedCategories.has(selectedCategory)) {
-                    selectedCategories.delete(selectedCategory);
-                } else {
-                    selectedCategories.add(selectedCategory);
-                }
-                filterProducts();
-                categoryFilterContent.classList.remove('active');
-            });
-        });
-
-        document.querySelectorAll('#whoFilterContent div').forEach(item => {
-            item.addEventListener('click', function() {
-                const selectedWho = this.getAttribute('data-who');
-                if (selectedWhos.has(selectedWho)) {
-                    selectedWhos.delete(selectedWho);
-                } else {
-                    selectedWhos.add(selectedWho);
-                }
-                filterProducts();
-                whoFilterContent.classList.remove('active');
-            });
-        });
-
-        document.getElementById('minPrice').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                applyPriceFilter();
+            if ((isNaN(minPrice) || price >= minPrice) && (isNaN(maxPrice) || price <= maxPrice) && isWhoMatch) {
+                product.style.display = 'flex';
+            } else {
+                product.style.display = 'none';
             }
         });
 
-        document.getElementById('maxPrice').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                applyPriceFilter();
+        menuHeader.classList.remove('active');
+        burgerHeader.style.opacity = 1;
+    }
+
+    function filterProductsInHeader() {
+        const productsList = document.getElementById('productsList');
+        const products = Array.from(productsList.children);
+
+        products.forEach(product => {
+            const productWho = product.getAttribute('data-who').split(',').map(who => who.trim());
+            const isWhoMatch = selectedWhosHeader.size === 0 || Array.from(selectedWhosHeader).some(who => productWho.includes(who));
+
+            if (isWhoMatch) {
+                product.style.display = 'flex';
+            } else {
+                product.style.display = 'none';
             }
         });
-
-        function applyPriceFilter() {
-            const minPrice = parseFloat(document.getElementById('minPrice').value);
-            const maxPrice = parseFloat(document.getElementById('maxPrice').value);
-            const productsList = document.getElementById('productsList');
-            const products = Array.from(productsList.children);
-
-            products.forEach(product => {
-                const price = parseFloat(product.getAttribute('data-price'));
-                const isCategoryMatch = selectedCategories.size === 0 || selectedCategories.has(product.getAttribute('data-category'));
-                const isWhoMatch = selectedWhos.size === 0 || selectedWhos.has(product.getAttribute('data-who'));
-
-                if ((isNaN(minPrice) || price >= minPrice) && (isNaN(maxPrice) || price <= maxPrice) && isCategoryMatch && isWhoMatch) {
-                    product.style.display = 'flex';
-                } else {
-                    product.style.display = 'none';
-                }
-            });
-
-            menu.classList.remove('active');
-            burger.style.opacity = 1;
-        }
-
-        function filterProducts() {
-            const productsList = document.getElementById('productsList');
-            const products = Array.from(productsList.children);
-
-            products.forEach(product => {
-                const productCategory = product.getAttribute('data-category');
-                const productWho = product.getAttribute('data-who');
-
-                const isCategoryMatch = selectedCategories.size === 0 || selectedCategories.has(productCategory);
-                const isWhoMatch = selectedWhos.size === 0 || selectedWhos.has(productWho);
-
-                if (isCategoryMatch && isWhoMatch) {
-                    product.style.display = 'flex';
-                } else {
-                    product.style.display = 'none';
-                }
-            });
-        }
-    </script>
+    }
+</script>
 </body>
 </html>

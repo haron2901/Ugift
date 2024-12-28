@@ -34,6 +34,7 @@
         }
 
         .back-button {
+            z-index:10;
             position: absolute;
             top: 12vh;
             left: 7vh;
@@ -43,6 +44,7 @@
         }
 
         .back-button img {
+            z-index:10;
             width: 80%;
             height: 80%;
         }
@@ -190,6 +192,7 @@
             }
 
             .back-button {
+                z-index:10;
                 top: 30px;
                 left: 10px;
             }
@@ -202,6 +205,13 @@
                 left: 10px;
                 right: 10px;
             }
+        }
+        .price-link{
+        position: absolute;
+        margin-top:3.5rem;
+        margin-left:-11rem;
+        font-family: 'Montserrat Alternates', sans-serif;
+        font-size:20px;
         }
     </style>
 </head>
@@ -226,13 +236,24 @@
             </div>
             <div class="product-details">
                 <h1>{{ product.name }}</h1>
-                <p class="price">{{ product.price }} руб.</p>
+                <p class="price">от {{ product.price }} руб.</p>
                 <p class="description">{{ description }}</p>
-                <p style="font-family: 'Montserrat Alternates', sans-serif; font-size: 18px; padding-top: 26rem; position: absolute;">Нажмите, чтобы перейти в магазин</p> <!-- Добавляем надпись -->
+                <p style="font-family: 'Montserrat Alternates', sans-serif; font-size: 18px; padding-top: 26rem; position: absolute;">Нажмите, чтобы перейти в магазин</p>
                 <div class="links">
+                     {% if product.wildberries_url != null %}
                     <a href="{{ product.wildberries_url }}" class="link">Wildberries</a>
+                    <a class="price-link">{{product.wildberries_price}} Руб</a>
+                     {% endif %}
+                    {% if product.ozon_url != null %}
+
                     <a href="{{ product.ozon_url }}" class="link">Ozon</a>
+                    <a class="price-link">{{product.ozon_price}} Руб</a>
+                     {% endif %}
+                    {% if product.yandex_market_url != null %}
+
                     <a href="{{ product.yandex_market_url }}" class="link">Яндекс Маркет</a>
+                    <a class="price-link">{{product.yandex_market_price}} Руб</a>
+                    {% endif %}
                 </div>
             </div>
         </main>

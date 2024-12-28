@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from .models import Product, ProductImage
+from .forms import ProductForm
 import random
 
 def index(request):
@@ -10,21 +11,12 @@ def page1(request):
 
 def page2(request):
     products = list(Product.objects.all())
-
     random_products = random.sample(products, min(len(products), 8))
 
-    category_filter = request.GET.get('category')
-    if category_filter:
-        random_products = [product for product in random_products if product.category == category_filter]
+    for product in products:
+        product.main_image = product.images.filter(is_main=True).first()
 
-    who_filter = request.GET.get('who')
-    if who_filter:
-        random_products = [product for product in random_products if product.for_who == who_filter]
-
-    for product in random_products:
-        product.main_image = product.images.filter(is_main=True).first()  # Получаем только главное изображение
-
-    return render(request, 'main/page2.html', {'products': random_products})
+    return render(request, 'main/page2.html', {'products': products})
 
 
 def page3(request):
@@ -41,5 +33,50 @@ def product_detail(request, url):
         'product': product,
         'main_image': main_image,
         'images': images,
-        'description': product.description  # Добавляем описание продукта в контекст
+        'description': product.description
     })
+
+
+from django.shortcuts import render
+from .forms import ProductForm
+from .models import ProductImage
+import os
+from django.conf import settings
+
+def handle_uploaded_file(file, filename):
+    file_path = os.path.join(settings.MEDIA_ROOT, filename)
+    with open(file_path, 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+    return f'{filename}'
+
+def create_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save()
+
+            is_main_set = False
+            for i in range(1, 5):
+                image_field = request.FILES.get(f'image_{i}')
+                if image_field:
+                    is_main = not is_main_set
+                    if is_main:
+                        is_main_set = True
+
+                    image_url = handle_uploaded_file(image_field, image_field.name)
+
+                    ProductImage.objects.create(
+                        product=product,
+                        image_url=image_url,
+                        is_main=is_main
+                    )
+
+            return render(request, 'product/create_product.html', {
+                'form': ProductForm(),
+                'success_message': 'Продукт успешно создан!'
+            })
+    else:
+        form = ProductForm()
+
+    return render(request, 'product/create_product.html', {'form': form})

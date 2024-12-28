@@ -105,6 +105,18 @@
             margin-left: 10px;
             transition: transform 0.3s;
         }
+        .reset-filter-button {
+            padding: 18px 25px;
+            background: #FF6B6B;
+            border-radius: 50px;
+            color: white;
+            font-size: 20px;
+            font-weight: 400;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .products-list {
             display: flex;
             flex-wrap: wrap;
@@ -188,15 +200,6 @@
                 <img src="media/Expand_down.png" class="filter-arrow" id="priceFilterArrow" />
             </div>
 
-            <div class="filter-button" id="categoryFilterButton">
-                <div class="filter-label">КАТЕГОРИЯ</div>
-                <img src="media/Expand_down.png" class="filter-arrow" id="categoryArrow" />
-                <div class="filter-dropdown" id="categoryDropdown">
-                    <div data-category="food">Еда</div>
-                    <div data-category="gift_set">Подарочный набор</div>
-                </div>
-            </div>
-
             <div class="filter-button" id="whoFilterButton">
                 <div class="filter-label">КОМУ</div>
                 <img src="media/Expand_down.png" class="filter-arrow" id="whoArrow" />
@@ -205,26 +208,37 @@
                     <div data-who="man">Парень</div>
                     <div data-who="mom">Мама</div>
                     <div data-who="dad">Папа</div>
+                    <div data-who="friends">Друзья</div>
+                    <div data-who="brother">Брат</div>
+                    <div data-who="sister">Сестра</div>
                 </div>
             </div>
+
+            <div class="reset-filter-button" id="resetFilterButton">Сбросить фильтры получателей</div>
         </div>
 
         <div class="products-list" id="productsList">
             {% for product in products %}
-                <div class="product-container" data-price="{{ product.price }}" data-popularity="{{ product.quantity_purchased }}" data-category="{{ product.category }}" data-who="{{ product.for_who }}">
-                    <div class="product-price">{{ product.price }} руб.</div>
-                    <img class="product-image" src="media/{{  product.main_image.image_url }}" />
-                    <div class="product-title">{{ product.name }}</div>
-                    <div class="shop-button">
-                        <a href="{% url 'product_detail' product.url %}" class="filter-label" style="text-decoration: none;">ПЕРЕЙТИ В МАГАЗИН</a>
-                    </div>
+            <div class="product-container"
+                 data-price="{{ product.price }}"
+                 data-popularity="{{ product.quantity_purchased }}"
+                 data-category="{{ product.category }}"
+                 data-who="{{ product.for_who|join:', ' }}"
+                 style="display: {% if forloop.counter <= 8 %} flex {% else %} none {% endif %};">
+                <div class="product-price">{{ product.price }} руб.</div>
+                <img class="product-image" src="media/{{ product.main_image.image_url }}" />
+                <div class="product-title">{{ product.name }}</div>
+                <div class="shop-button">
+                    <a href="{% url 'product_detail' product.url %}" class="filter-label" style="text-decoration: none;">ПЕРЕЙТИ В МАГАЗИН</a>
                 </div>
+            </div>
             {% endfor %}
         </div>
     </div>
     <script>
         let isAscendingPrice = true;
         let isAscendingPopularity = true;
+        const selectedWhos = new Set();
 
         document.getElementById('priceFilterButton').addEventListener('click', function() {
             const productsList = document.getElementById('productsList');
@@ -239,10 +253,11 @@
 
             isAscendingPrice = !isAscendingPrice;
 
-            products.forEach(product => productsList.appendChild(product));
+            products.forEach(product => {
+                product.style.display = 'flex'; // Показываем все товары
+            });
 
-            // Поворот стрелочки
-            console.log(priceArrow)
+            products.forEach(product => productsList.appendChild(product));
             priceArrow.style.transform = isAscendingPrice ? 'rotate(0deg)' : 'rotate(180deg)';
         });
 
@@ -254,36 +269,22 @@
             products.sort((a, b) => {
                 const popularityA = parseInt(a.getAttribute('data-popularity'));
                 const popularityB = parseInt(b.getAttribute('data-popularity'));
-                return popularityB - popularityA;
+                return isAscendingPopularity ? popularityA - popularityB : popularityB - popularityA;
+            });
+
+            isAscendingPopularity = !isAscendingPopularity;
+
+            products.forEach(product => {
+                product.style.display = 'flex'; // Показываем все товары
             });
 
             products.forEach(product => productsList.appendChild(product));
-
-            // Поворот стрелочки
-            popularityArrow.style.transform = popularityArrow.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
-        });
-
-        document.getElementById('categoryFilterButton').addEventListener('click', function() {
-            const dropdown = document.getElementById('categoryDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            popularityArrow.style.transform = isAscendingPopularity ? 'rotate(0deg)' : 'rotate(180deg)';
         });
 
         document.getElementById('whoFilterButton').addEventListener('click', function() {
             const dropdown = document.getElementById('whoDropdown');
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        });
-
-        document.querySelectorAll('#categoryDropdown div').forEach(item => {
-            item.addEventListener('click', function() {
-                const selectedCategory = this.getAttribute('data-category');
-                if (selectedCategories.has(selectedCategory)) {
-                    selectedCategories.delete(selectedCategory);
-                } else {
-                    selectedCategories.add(selectedCategory);
-                }
-                filterProducts();
-                document.getElementById('categoryDropdown').style.display = 'none';
-            });
         });
 
         document.querySelectorAll('#whoDropdown div').forEach(item => {
@@ -304,27 +305,28 @@
             const products = Array.from(productsList.children);
 
             products.forEach(product => {
-                const productCategory = product.getAttribute('data-category');
-                const productWho = product.getAttribute('data-who');
+                const productWho = product.getAttribute('data-who').split(',').map(who => who.trim());
+                const isWhoMatch = selectedWhos.size === 0 || Array.from(selectedWhos).some(who => productWho.includes(who));
 
-                const isCategoryMatch = selectedCategories.size === 0 || selectedCategories.has(productCategory);
-                const isWhoMatch = selectedWhos.size === 0 || selectedWhos.has(productWho);
-
-                if (isCategoryMatch && isWhoMatch) {
-                    product.style.display = 'flex';
+                if (isWhoMatch) {
+                    product.style.display = 'flex'; // Показываем соответствующие товары
                 } else {
-                    product.style.display = 'none';
+                    product.style.display = 'none'; // Скрываем не соответствующие товары
                 }
             });
         }
 
+        document.getElementById('resetFilterButton').addEventListener('click', function() {
+            selectedWhos.clear(); // Очистить выбранные фильтры
+            document.querySelectorAll('#whoDropdown div').forEach(item => {
+                item.classList.remove('selected'); // Удалить выделение из выпадающего списка
+            });
+            filterProducts(); // Обновить отображение товаров
+        });
+
         document.addEventListener('click', function(event) {
-            const categoryDropdown = document.getElementById('categoryDropdown');
             const whoDropdown = document.getElementById('whoDropdown');
 
-            if (!event.target.closest('#categoryFilterButton') && !event.target.closest('#categoryDropdown')) {
-                categoryDropdown.style.display = 'none';
-            }
             if (!event.target.closest('#whoFilterButton') && !event.target.closest('#whoDropdown')) {
                 whoDropdown.style.display = 'none';
             }

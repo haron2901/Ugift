@@ -1,0 +1,33 @@
+<!-- templates/product/create_product.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание товара</title>
+</head>
+<body>
+    <h1>Создание товара</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <label for="image_1">Основное изображение:</label>
+        <input type="file" name="image_1" id="image_1"><br>
+
+        <label for="image_2">Изображение 2:</label>
+        <input type="file" name="image_2" id="image_2"><br>
+
+        <label for="image_3">Изображение 3:</label>
+        <input type="file" name="image_3" id="image_3"><br>
+
+        <label for="image_4">Изображение 4:</label>
+        <input type="file" name="image_4" id="image_4"><br>
+
+        <button type="submit">Сохранить товар</button>
+    </form>
+</body>
+</html>
+{% if success_message %}
+    <p>{{ success_message }}</p>
+{% endif %}
